@@ -1,0 +1,4 @@
+Training time: 811.883 s
+Epoch: 20 COLOR: YUV Batch size: 32 UNITS_NUM: 16
+Trainig set: Loss = 0.207  Accuracy: 0.917
+Validation set: Loss = 0.759  Accuracy: 0.753

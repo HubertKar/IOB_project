@@ -1,0 +1,4 @@
+Training time: 801.100 s
+Epoch: 20 COLOR: HSV Batch size: 32 UNITS_NUM: 16
+Trainig set: Loss = 0.219  Accuracy: 0.910
+Validation set: Loss = 0.359  Accuracy: 0.850

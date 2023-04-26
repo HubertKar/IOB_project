@@ -1,0 +1,4 @@
+Training time: 1947.833 s
+Epoch: 50 COLOR: RGB Batch size: 32 UNITS_NUM: 16
+Trainig set: Loss = 0.156  Accuracy: 0.936
+Validation set: Loss = 0.387  Accuracy: 0.868

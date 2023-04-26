@@ -1,0 +1,4 @@
+Training time: 960.108 s
+Model type: 2 Epoch: 20 COLOR: YUV Batch size: 32 UNITS_NUM: 16
+Trainig set: Loss = 0.273  Accuracy: 0.886
+Validation set: Loss = 0.366  Accuracy: 0.842
