@@ -1,0 +1,4 @@
+Training time: 631.423 s
+Model type: 1 Epoch: 20 COLOR: RGB+HSV Batch size: 16 UNITS_NUM: 16
+Trainig set: Loss = 0.218  Accuracy: 0.911
+Validation set: Loss = 0.385  Accuracy: 0.830

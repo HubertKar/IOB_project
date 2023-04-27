@@ -40,6 +40,10 @@ def import_images(path, max=-1, color = "RGB"):
             image_r, image_g, image_b = cv.split(image)
             image_canny = cv.Canny(image,100,200)
             image = cv.merge((image_r, image_g, image_b, image_canny))
+        elif color == "H":
+            image_HSV = cv.cvtColor(image, cv.COLOR_BGR2HSV)
+            image_H, image_S, image_V = cv.split(image_HSV)
+            image = image_H
 
         images_set.append(tf.convert_to_tensor(image))
         n += 1
@@ -214,9 +218,20 @@ class Next_button(object):  # Klasa do przycisku zarządzania przyciskiem w funk
 
         prediction = self.u_net_model.predict(sample_image[tf.newaxis, ...])[0]
 
+
         plt.subplot(131)
-        plt.imshow(sample_image[:,:,0:3])
-        plt.title("Obraz wejściowy")
+        if len(sample_image.shape) < 3: # Jeśli tylko jeden kanał
+            if COLOR_NAME == 'H':
+                plt.imshow(sample_image, cmap='hsv')
+            if COLOR_NAME == 'GRAY':
+                plt.imshow(sample_image, cmap='gray')
+            else:
+                plt.imshow(sample_image)
+        else:
+            if sample_image.shape[2] > 3: # Jeśli jest więcej niż 3 kanały to weź pierwsze 3
+                plt.imshow(sample_image[:,:,0:3])
+            else:
+                plt.imshow(sample_image)
 
         plt.subplot(132)
         predicted_mask = (prediction > 0.5).astype(np.uint8) # 0.5 próg powyżej którego pikel trakowany jest jako drzewo
@@ -242,7 +257,20 @@ def test_model(u_net_model, test_images, test_labels): # Funckja do testowania d
     fig = plt.figure(figsize=(10,5))
 
     plt.subplot(131)
-    plt.imshow(sample_image[:,:,0:3])
+
+    if len(sample_image.shape) < 3: # Jeśli tylko jeden kanał
+        if COLOR_NAME == 'H':
+            plt.imshow(sample_image, cmap='hsv')
+        if COLOR_NAME == 'GRAY':
+            plt.imshow(sample_image, cmap='gray')
+        else:
+            plt.imshow(sample_image)
+    else:
+        if sample_image.shape[2] > 3: # Jeśli jest więcej niż 3 kanały to weź pierwsze 3
+            plt.imshow(sample_image[:,:,0:3])
+        else:
+            plt.imshow(sample_image)
+
     plt.title("Obraz wejściowy")
 
     plt.subplot(132)
@@ -267,11 +295,11 @@ IMG_WIDTH = 256
 IMG_HEIGHT = 256
 IMG_CHANELS = 4
 BATCH_SIZE = 32
-EPOCHS = 5
+EPOCHS = 20
 UNITS_NUM = 16
-MODEL_NAME= "TEST_RGB+EDGES_E5_T1"
-COLOR_NAME= "RGB+EDGES"
-MODEL_TYPE = 1
+MODEL_NAME= "RGB+H_E20_T2"
+COLOR_NAME= "RGB+H"
+MODEL_TYPE = 2
 FINAL_TEST = False
 
 ######################## MAIN #################
