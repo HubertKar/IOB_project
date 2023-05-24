@@ -29,6 +29,17 @@ def import_images(path, max=-1, color = "RGB"):
             image_HSV = cv.cvtColor(image, cv.COLOR_BGR2HSV)
             image_H, image_S, image_V = cv.split(image_HSV)
             image = cv.merge((image_r, image_g, image_b, image_H))
+        elif color == "RGB+H_Green": # RGB + kanał H tylko z zieloną cześcią
+            image = cv.cvtColor(image, cv.COLOR_BGR2RGB)
+            image_r, image_g, image_b = cv.split(image)
+            image_HSV = cv.cvtColor(image, cv.COLOR_BGR2HSV)
+            mask_HSV = cv.inRange(image_HSV, np.array([60, 50, 30]), np.array([100, 255, 255]))
+            image_HSV_green = cv.bitwise_and(image_HSV, image_HSV, mask=mask_HSV)
+            image_H_green, image_S, image_V = cv.split(image_HSV_green)
+            image = cv.merge((image_r, image_g, image_b, image_H_green))
+            # cv.imshow("rgb", image)
+            # cv.imshow("H_green", image_H_green)
+            # cv.waitKey(3000)
         elif color == "RGB+HSV":
             image = cv.cvtColor(image, cv.COLOR_BGR2RGB)
             image_r, image_g, image_b = cv.split(image)
@@ -297,9 +308,13 @@ IMG_CHANELS = 4
 BATCH_SIZE = 32
 EPOCHS = 20
 UNITS_NUM = 16
-MODEL_NAME= "RGB+H_E20_T2"
-COLOR_NAME= "RGB+H"
-MODEL_TYPE = 2
+COLOR_NAME= "RGB+H_Green"
+MODEL_TYPE = 1
+NAME_PREFIX = ""
+NAME_SUFFIX = ""
+
+MODEL_NAME= NAME_PREFIX + COLOR_NAME + "_E" + str(EPOCHS) + "_T" + str(MODEL_TYPE) + NAME_SUFFIX 
+
 FINAL_TEST = False
 
 ######################## MAIN #################
@@ -416,6 +431,7 @@ def main():
 
 
     if FINAL_TEST == True:
+        print("Wczytywanie zbioru testtwego")
         with tf.device('/CPU:0'): 
             print("Wczytywanie zbioru testowego...")
             test_images = import_images("images/test/img",color=COLOR_NAME) # Dane do tesotowania
