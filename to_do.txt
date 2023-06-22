@@ -1,3 +1,0 @@
-1. konwersja na HSV i ... (zrobione)
-2. Obliczanie dokładności na końcu
-3. Wykres z uczenia (zrobione)
